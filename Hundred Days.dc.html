@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>One Hundred Days</title>
+<meta name="description" content="A card a day from 27 August to 4 December 2026. Written one at a time, read all at once.">
+<meta name="theme-color" content="#F0EAE0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="100 Days">
+<meta name="format-detection" content="telephone=no">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23B4623F'/%3E%3Crect x='16' y='14' width='32' height='36' rx='5' fill='%23FBF8F3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&amp;display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; padding: 0; background: oklch(0.945 0.013 82); -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: oklch(0.52 0.11 32); text-decoration: none; }
+  a:hover { color: oklch(0.42 0.11 32); }
+  textarea::placeholder { color: oklch(0.72 0.012 70); font-style: italic; }
+  textarea { -webkit-appearance: none; }
+  ::selection { background: oklch(0.52 0.11 32 / 0.18); }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; } }
+  @keyframes cardIn { from { opacity: 0; transform: translateY(16px) scale(0.985); } to { opacity: 1; transform: none; } }
+  @keyframes cardOut { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(-46px) rotate(-3.5deg) scale(0.95); } }
+  @keyframes riseIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  @keyframes breathe { 0%, 100% { opacity: 0.32; } 50% { opacity: 0.7; } }
+</style>
+</helmet>
+<div style="min-height: 100dvh; display: flex; justify-content: center; background: oklch(0.945 0.013 82); font-family: 'Helvetica Neue', Helvetica, sans-serif; color: oklch(0.28 0.018 60);">
+  <div style="width: 100%; max-width: 430px; min-height: 100dvh; display: flex; flex-direction: column; padding: max(18px, env(safe-area-inset-top)) 20px calc(22px + env(safe-area-inset-bottom)); gap: 18px;">
+
+    <sc-if value="{{ storageBroken }}">
+      <div style="flex: none; border: 1px solid oklch(0.78 0.09 55); background: oklch(0.95 0.035 70); border-radius: 12px; padding: 10px 12px; font-size: 11px; line-height: 1.5; color: oklch(0.4 0.06 45);">This browser won't let the site save anything. Turn off Private Browsing, or your cards will be lost when you close this tab.</div>
+    </sc-if>
+
+    <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+      <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 26px; padding-bottom: 40px; animation: riseIn 0.7s ease both;">
+        <div style="font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: oklch(0.55 0.015 65);">27 Aug — 4 Dec 2026</div>
+        <div style="font-family: Newsreader, Georgia, serif; font-size: 46px; line-height: 1.08; font-weight: 400; letter-spacing: -0.01em;">One hundred<br>days</div>
+        
+        <button onClick="{{ onBegin }}" style="margin-top: 6px; height: 54px; padding: 0 42px; border: none; border-radius: 999px; background: oklch(0.52 0.11 32); color: oklch(0.98 0.008 85); font-family: 'Helvetica Neue', Helvetica, sans-serif; font-size: 15px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer;" style-hover="background: oklch(0.45 0.11 32);" style-active="transform: scale(0.97);">Begin</button>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isWrite }}">
+      <div style="display: flex; flex-direction: column; flex: 1; gap: 18px;">
+        <sc-if value="{{ showProgress }}">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="flex: 1; height: 2px; background: oklch(0.88 0.012 80); border-radius: 2px; overflow: hidden;">
+              <div style="{{ progressStyle }}"></div>
+            </div>
+            <div style="font-size: 10px; letter-spacing: 0.16em; color: oklch(0.6 0.015 65); font-variant-numeric: tabular-nums;">{{ counterLabel }}</div>
+          </div>
+        </sc-if>
+
+        <div style="position: relative; flex: 1; min-height: 200px;">
+          <div style="position: absolute; inset: 14px 6px -10px; background: oklch(0.975 0.008 85); border: 1px solid oklch(0.9 0.012 80); border-radius: 22px; transform: rotate(1.6deg);"></div>
+          <div style="position: absolute; inset: 8px 3px -5px; background: oklch(0.978 0.008 85); border: 1px solid oklch(0.91 0.012 80); border-radius: 22px; transform: rotate(-1.1deg);"></div>
+
+          <div key="{{ cardKey }}" style="position: absolute; inset: 0; background: oklch(0.985 0.007 85); border: 1px solid oklch(0.9 0.012 80); border-radius: 22px; box-shadow: 0 18px 40px -28px oklch(0.3 0.02 60 / 0.5); padding: 26px 24px 22px; display: flex; flex-direction: column; gap: 18px; animation: cardIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; border-bottom: 1px solid oklch(0.91 0.012 80); padding-bottom: 14px;">
+              <div style="display: flex; flex-direction: column; gap: 5px;">
+                <div style="font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: oklch(0.6 0.015 65);">{{ weekday }}</div>
+                <div style="font-family: Newsreader, Georgia, serif; font-size: 30px; line-height: 1; letter-spacing: -0.01em;">{{ dayMonth }}</div>
+              </div>
+              <div style="font-size: 11px; letter-spacing: 0.14em; color: oklch(0.68 0.012 70);">2026</div>
+            </div>
+            <textarea value="{{ draft }}" onChange="{{ onDraft }}" placeholder="Write to her…" autoCapitalize="sentences" autoCorrect="on" spellCheck="true" enterKeyHint="enter" aria-label="Your message for this day" style="flex: 1; width: 100%; border: none; background: transparent; resize: none; outline: none; font-family: Newsreader, Georgia, serif; font-size: 19px; line-height: 1.62; color: oklch(0.28 0.018 60); padding: 0;"></textarea>
+          </div>
+
+          <sc-if value="{{ isExiting }}">
+            <div style="position: absolute; inset: 0; z-index: 3; pointer-events: none; background: oklch(0.985 0.007 85); border: 1px solid oklch(0.9 0.012 80); border-radius: 22px; box-shadow: 0 18px 40px -28px oklch(0.3 0.02 60 / 0.5); padding: 26px 24px 22px; display: flex; flex-direction: column; gap: 18px; animation: cardOut 0.52s cubic-bezier(0.5, 0, 0.75, 0) both;">
+              <div style="font-family: Newsreader, Georgia, serif; font-size: 30px; line-height: 1; border-bottom: 1px solid oklch(0.91 0.012 80); padding-bottom: 14px;">{{ exitDayMonth }}</div>
+              <div style="font-family: Newsreader, Georgia, serif; font-size: 19px; line-height: 1.62; color: oklch(0.42 0.018 60); overflow: hidden;">{{ exitText }}</div>
+            </div>
+          </sc-if>
+        </div>
+
+        <button onClick="{{ onSubmit }}" style="height: 54px; border: none; border-radius: 999px; background: oklch(0.52 0.11 32); color: oklch(0.98 0.008 85); font-family: 'Helvetica Neue', Helvetica, sans-serif; font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; flex: none;" style-hover="background: oklch(0.45 0.11 32);" style-active="transform: scale(0.985);">{{ submitLabel }}</button>
+
+        <div style="flex: none; display: flex; justify-content: center; gap: 22px; margin-top: -6px;">
+          <button onClick="{{ onExport }}" style="border: none; background: transparent; padding: 6px 4px; font-family: 'Helvetica Neue', Helvetica, sans-serif; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: oklch(0.66 0.012 68); cursor: pointer;" style-hover="color: oklch(0.42 0.018 60);">Back up</button>
+          <button onClick="{{ onPickFile }}" style="border: none; background: transparent; padding: 6px 4px; font-family: 'Helvetica Neue', Helvetica, sans-serif; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: oklch(0.66 0.012 68); cursor: pointer;" style-hover="color: oklch(0.42 0.018 60);">{{ restoreLabel }}</button>
+          <input type="file" accept="application/json,.json" ref="{{ fileRef }}" onChange="{{ onImport }}" style="display: none;" />
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isUnlocked }}">
+      <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 24px; padding-bottom: 40px; animation: riseIn 0.8s ease both;">
+        <div style="font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: oklch(0.55 0.015 65);">All 100 sealed</div>
+        <div style="font-family: Newsreader, Georgia, serif; font-size: 42px; line-height: 1.1;">They're all yours now</div>
+        
+        <button onClick="{{ onOpen }}" style="margin-top: 6px; height: 54px; padding: 0 40px; border: none; border-radius: 999px; background: oklch(0.52 0.11 32); color: oklch(0.98 0.008 85); font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; font-family: 'Helvetica Neue', Helvetica, sans-serif;" style-hover="background: oklch(0.45 0.11 32);">Open the first</button>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isReveal }}">
+      <div onClick="{{ onRevealTap }}" style="display: flex; flex-direction: column; flex: 1; gap: 18px; cursor: pointer; user-select: none;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="flex: 1; height: 2px; background: oklch(0.88 0.012 80); border-radius: 2px; overflow: hidden;">
+            <div style="{{ progressStyle }}"></div>
+          </div>
+          <div style="font-size: 10px; letter-spacing: 0.16em; color: oklch(0.6 0.015 65); font-variant-numeric: tabular-nums;">{{ counterLabel }}</div>
+        </div>
+
+        <div style="position: relative; flex: 1; min-height: 380px;">
+          <div style="position: absolute; inset: 10px 5px -8px; background: oklch(0.975 0.008 85); border: 1px solid oklch(0.9 0.012 80); border-radius: 22px; transform: rotate(-1.4deg);"></div>
+          <div key="{{ cardKey }}" style="position: absolute; inset: 0; background: oklch(0.985 0.007 85); border: 1px solid oklch(0.9 0.012 80); border-radius: 22px; box-shadow: 0 18px 40px -28px oklch(0.3 0.02 60 / 0.5); padding: 26px 24px 24px; display: flex; flex-direction: column; gap: 18px; overflow: hidden; animation: cardIn 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; border-bottom: 1px solid oklch(0.91 0.012 80); padding-bottom: 14px;">
+              <div style="display: flex; flex-direction: column; gap: 5px;">
+                <div style="font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: oklch(0.6 0.015 65);">{{ weekday }}</div>
+                <div style="font-family: Newsreader, Georgia, serif; font-size: 30px; line-height: 1; letter-spacing: -0.01em;">{{ dayMonth }}</div>
+              </div>
+              <div style="font-size: 11px; letter-spacing: 0.14em; color: oklch(0.68 0.012 70);">2026</div>
+            </div>
+            <div style="flex: 1; overflow-y: auto; font-family: Newsreader, Georgia, serif; font-size: 19px; line-height: 1.66; white-space: pre-wrap; text-wrap: pretty; color: oklch(0.28 0.018 60);">{{ revealText }}</div>
+          </div>
+        </div>
+
+        <div style="height: 54px; display: flex; align-items: center; justify-content: center; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: oklch(0.6 0.015 65); animation: breathe 2.6s ease-in-out infinite;">{{ revealHint }}</div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isEnd }}">
+      <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 22px; padding-bottom: 40px; animation: riseIn 0.8s ease both;">
+        <div style="font-family: Newsreader, Georgia, serif; font-size: 42px; line-height: 1.1;">That was all of them</div>
+        <div style="font-family: Newsreader, Georgia, serif; font-style: italic; font-size: 17px; color: oklch(0.48 0.015 62);">One hundred days.</div>
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 8px; align-items: center;">
+          <button onClick="{{ onOpen }}" style="height: 52px; padding: 0 38px; border: 1px solid oklch(0.52 0.11 32); border-radius: 999px; background: transparent; color: oklch(0.52 0.11 32); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; font-family: 'Helvetica Neue', Helvetica, sans-serif;" style-hover="background: oklch(0.52 0.11 32 / 0.07);">Read again</button>
+          <sc-if value="{{ allowRestart }}">
+            <button onClick="{{ onRestart }}" style="height: 44px; padding: 0 18px; border: none; background: transparent; color: oklch(0.62 0.015 65); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; font-family: 'Helvetica Neue', Helvetica, sans-serif;" style-hover="color: oklch(0.4 0.018 60);">{{ restartLabel }}</button>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+
+  </div>
+</div>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#B4623F"/><rect x="30" y="28" width="40" height="44" rx="6" fill="#FBF8F3"/><rect x="38" y="40" width="24" height="3" rx="1.5" fill="#D8CFC2"/><rect x="38" y="49" width="24" height="3" rx="1.5" fill="#D8CFC2"/><rect x="38" y="58" width="14" height="3" rx="1.5" fill="#D8CFC2"/></svg></template>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:393,&quot;height&quot;:852},&quot;showProgress&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;revealPace&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;tap&quot;,&quot;auto&quot;],&quot;default&quot;:&quot;tap&quot;,&quot;tsType&quot;:&quot;'tap' | 'auto'&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;allowRestart&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;}}">
+const KEY = 'hundred-days.v1';
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+const store = {
+  ok: true,
+  mem: {},
+  get(k) {
+    try { return localStorage.getItem(k); } catch (e) { this.ok = false; return this.mem[k] || null; }
+  },
+  set(k, v) {
+    try { localStorage.setItem(k, v); this.ok = true; } catch (e) { this.ok = false; this.mem[k] = v; }
+  },
+  del(k) {
+    try { localStorage.removeItem(k); } catch (e) {}
+    delete this.mem[k];
+  }
+};
+try { localStorage.setItem(KEY + '.probe', '1'); localStorage.removeItem(KEY + '.probe'); }
+catch (e) { store.ok = false; }
+
+function buildDates() {
+  const out = [];
+  const end = Date.UTC(2026, 11, 4);
+  for (let t = Date.UTC(2026, 7, 27); t <= end; t += 86400000) out.push(new Date(t));
+  return out;
+}
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.dates = buildDates();
+    this.fileRef = React.createRef();
+    let saved = null;
+    try { saved = JSON.parse(store.get(KEY) || 'null'); } catch (e) {}
+    const entries = (saved && Array.isArray(saved.entries) ? saved.entries : []).slice(0, this.dates.length);
+    const index = Math.min(entries.length, this.dates.length);
+    let phase = 'intro';
+    if (saved && saved.phase) phase = saved.phase;
+    else if (entries.length > 0) phase = index >= this.dates.length ? 'unlocked' : 'write';
+    if (phase === 'write' && index >= this.dates.length) phase = 'unlocked';
+    if (['intro','write','unlocked','reveal','end'].indexOf(phase) === -1) phase = 'intro';
+    this.state = {
+      entries, index, phase,
+      draft: (saved && typeof saved.draft === 'string') ? saved.draft : '',
+      exiting: null, revealIndex: 0, confirmRestart: false, restoreNote: ''
+    };
+  }
+
+  commit(patch) {
+    const next = Object.assign({}, this.state, patch);
+    store.set(KEY, JSON.stringify({ v: 1, entries: next.entries, phase: next.phase, draft: next.draft }));
+    this.setState(patch);
+  }
+
+  persist(over) {
+    const s = Object.assign({}, this.state, over || {});
+    store.set(KEY, JSON.stringify({ v: 1, entries: s.entries, phase: s.phase, draft: s.draft }));
+  }
+
+  componentDidUpdate() {}
+
+  componentWillUnmount() {
+    if (this.timer) clearTimeout(this.timer);
+    if (this.restartTimer) clearTimeout(this.restartTimer);
+    if (this.noteTimer) clearTimeout(this.noteTimer);
+  }
+
+  exportBackup = () => {
+    const payload = JSON.stringify({ v: 1, exported: new Date().toISOString(), entries: this.state.entries }, null, 2);
+    const url = URL.createObjectURL(new Blob([payload], { type: 'application/json' }));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'hundred-days-backup.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+  };
+
+  note(text) {
+    if (this.noteTimer) clearTimeout(this.noteTimer);
+    this.setState({ restoreNote: text });
+    this.noteTimer = setTimeout(() => this.setState({ restoreNote: '' }), 3000);
+  }
+
+  importBackup = e => {
+    const file = e.target.files && e.target.files[0];
+    e.target.value = '';
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      let data = null;
+      try { data = JSON.parse(reader.result); } catch (err) {}
+      const entries = data && Array.isArray(data.entries) ? data.entries.filter(x => x && typeof x.text === 'string') : null;
+      if (!entries) { this.note('Bad file'); return; }
+      const clipped = entries.slice(0, this.dates.length);
+      const index = clipped.length;
+      this.commit({
+        entries: clipped, index, draft: '', exiting: null, revealIndex: 0,
+        phase: index >= this.dates.length ? 'unlocked' : 'write',
+        restoreNote: 'Restored ' + index
+      });
+      if (this.noteTimer) clearTimeout(this.noteTimer);
+      this.noteTimer = setTimeout(() => this.setState({ restoreNote: '' }), 3000);
+    };
+    reader.readAsText(file);
+  };
+
+  restart = () => {
+    if (!this.state.confirmRestart) {
+      this.setState({ confirmRestart: true });
+      if (this.restartTimer) clearTimeout(this.restartTimer);
+      this.restartTimer = setTimeout(() => this.setState({ confirmRestart: false }), 4000);
+      return;
+    }
+    store.del(KEY);
+    this.commit({ entries: [], index: 0, phase: 'intro', draft: '', revealIndex: 0, exiting: null, confirmRestart: false });
+  };
+
+  arm() {
+    if (this.timer) clearTimeout(this.timer);
+    this.timer = null;
+    if (this.state.phase !== 'reveal' || this.props.revealPace !== 'auto') return;
+    this.timer = setTimeout(() => this.advanceReveal(), 5000);
+  }
+
+  advanceReveal() {
+    const s = this.state;
+    if (s.revealIndex + 1 >= s.entries.length) {
+      if (this.timer) clearTimeout(this.timer);
+      this.timer = null;
+      this.commit({ phase: 'end' });
+    } else {
+      this.setState({ revealIndex: s.revealIndex + 1 });
+      this.arm();
+    }
+  }
+
+  submit = () => {
+    if (this.state.exiting) return;
+    const s = this.state;
+    const date = this.dates[s.index];
+    if (!date) return;
+    const text = s.draft;
+    const entries = s.entries.concat([{ iso: date.toISOString().slice(0, 10), text: text }]);
+    const index = s.index + 1;
+    this.commit({
+      entries, index, draft: '',
+      exiting: { date, text },
+      phase: index >= this.dates.length ? 'unlocked' : 'write'
+    });
+    setTimeout(() => this.setState({ exiting: null }), 560);
+  };
+
+  fmt(d) {
+    return {
+      weekday: DAYS[d.getUTCDay()],
+      dayMonth: d.getUTCDate() + ' ' + MONTHS[d.getUTCMonth()]
+    };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const total = this.dates.length;
+    const showProgress = this.props.showProgress ?? true;
+    const reveal = s.phase === 'reveal';
+    const active = reveal
+      ? this.dates[Math.min(s.revealIndex, total - 1)]
+      : this.dates[Math.min(s.index, total - 1)];
+    const f = this.fmt(active);
+    const entry = reveal ? s.entries[s.revealIndex] : null;
+    const n = reveal ? s.revealIndex + 1 : Math.min(s.index + 1, total);
+    const pct = (reveal ? (s.revealIndex + 1) / total : s.index / total) * 100;
+
+    return {
+      isIntro: s.phase === 'intro',
+      isWrite: s.phase === 'write',
+      isUnlocked: s.phase === 'unlocked',
+      isReveal: reveal,
+      isEnd: s.phase === 'end',
+      showProgress,
+      storageBroken: !store.ok,
+      fileRef: this.fileRef,
+      onExport: this.exportBackup,
+      onPickFile: () => this.fileRef.current && this.fileRef.current.click(),
+      onImport: this.importBackup,
+      restoreLabel: s.restoreNote || 'Restore',
+      restartLabel: s.confirmRestart ? 'Tap again to erase all of it' : 'Start over',
+      allowRestart: this.props.allowRestart ?? true,
+      progressStyle: { height: '100%', width: pct + '%', background: 'oklch(0.52 0.11 32)', borderRadius: '2px', transition: 'width 0.5s cubic-bezier(0.2,0.8,0.2,1)' },
+      counterLabel: n + ' / ' + total,
+      weekday: f.weekday,
+      dayMonth: f.dayMonth,
+      cardKey: (reveal ? 'r' : 'w') + (reveal ? s.revealIndex : s.index),
+      draft: s.draft,
+      onDraft: e => this.commit({ draft: e.target.value }),
+      onSubmit: this.submit,
+      submitLabel: s.index === total - 1 ? 'Seal the last one' : (s.draft.trim() ? 'Seal it' : 'Leave it blank'),
+      isExiting: !!s.exiting,
+      exitDayMonth: s.exiting ? this.fmt(s.exiting.date).dayMonth : '',
+      exitText: s.exiting ? s.exiting.text : '',
+      revealText: entry ? (entry.text.trim() ? entry.text : 'Nothing written this day.') : '',
+      revealHint: this.props.revealPace === 'auto' ? 'Tap to skip ahead' : 'Tap anywhere to continue',
+      onRevealTap: () => this.advanceReveal(),
+      onBegin: () => this.commit({ phase: 'write' }),
+      onOpen: () => { this.commit({ phase: 'reveal', revealIndex: 0 }); setTimeout(() => this.arm(), 0); },
+      onRestart: this.restart
+    };
+  }
+}
+
+</script>
+</body>
+</html>
